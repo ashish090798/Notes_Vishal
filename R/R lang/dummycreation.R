@@ -1,0 +1,7 @@
+install.packages("dummies")
+library(dummies)
+df <- read.csv("income_Census.csv")
+str(df)
+library(dummies)
+dfnew <- dummy.data.frame(df,)
+names(dfnew)
