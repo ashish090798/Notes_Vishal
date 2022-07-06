@@ -1,0 +1,40 @@
+##Guideline/Assumption of Linear Regression##
+##When we get data, we get data dictionary that explains what the columns stand for. We can communicate with SME(subject matter expert)
+
+1.Select input variable that affects target variable
+Use cor() to check correlation between input and target variable. There should be high correlation between input and target variable. 
+
+2.Input variables should not be correlated with each other.
+Use cor(df[-1,]) and vif(df,aes=(x=inputvar,y=targetvar)+geom_point) to check multicollinearity for continous and categorically variables respectively.
+If cor is high, check vif.If cif is less than 2 then ignore and take input variables into the model. If vif is 2-10 then we have to do treatment such as feature engineering and make input variable out of these two. If vif is more than 10 then we have to ignore one of the input variables. Negative and positive vif both means the same.
+
+3.There should be a linear relationship between input and target variable
+Use plot() and vif(df,aes=(x=inputvar,y=targetvar)+geom_smooth), vif(df,aes=(x=inputvar,y=targetvar)+geom_line) to check linear relationship. Input variabe should impact only the target variable and not any other input variable
+
+4.Target variable should be normally distributed
+Use hist(targetvar) to check the normal distribution. 
+Use hist(log(targetvar)) or hist(sqrt(targetvar)) to convert it into normally distributed.
+A normally distributed data represents all types of values(low,medium,high).
+
+5.Perform Data preprocessing. Removing duplicate,treat na,remove redundancy,treat outliers and leverage observations
+Duplicate-df2=unique(df)
+Redundancy-colnames(census)[c(1,2,3)]=c("a","b","c")
+
+6.Divide data into test and train
+set.seed(1245)
+ids = sample(nrow(Computers), nrow(Computers)*0.8 )
+train = Computers[ ids, ]
+test = Computers[ -ids,]
+
+7.Build model
+model2  = lm( logprice ~ . , data=train2)
+
+8.Diagnostic
+
+##checking multicollinearity- use cor() and vif()
+##checking normality of errors using hist(errors), qqPlot(fit, main="QQ Plot"),plot(model,which=2) 
+## checking outliers using boxplot() and outlierTest()
+##checking autocorrelation or heteroscedasticity(constant variance of errors) using plot(model,which=1), plot(model,which=3),plot(predicted,std.res) where predicted=model$fitted.values and std.res=stdres(model)
+##checking rmse and mape and r^^2
+##checking leverage observations by cook and cutoff distance using plot(model, which=4, cooks.lvevels=cutoff)
+where cd=cooks.distance(model) and cutoff=4/((nrow(model))-length(model$coefficients))   
