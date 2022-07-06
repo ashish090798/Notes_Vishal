@@ -1,0 +1,2 @@
+Data - https://www.kaggle.com/zygmunt/goodbooks-10k/data
+Codes - https://www.kaggle.com/philippsp/book-recommender-collaborative-filtering-shiny
